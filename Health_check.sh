@@ -10,29 +10,41 @@ set -euo pipefail
 #     -u      : Error on unset variables
 # -o pipefail : in pipelines like `cmd1 | cmd2`, fail if any command fails 
 
-echo "Hostname and IP address"
+
 # hostname: Display the system's hostname
 # hostname -I: Display all IP addresses assigned to the host
-hostname && hostname -I
+hostname=$(hostname)
+ip_address=$(hostname -I)
+printf '%-20s: %s\n' "Hostname" "$hostname"
+printf '%-20s: %s\n' "IP Address" "$ip_address"
 
-echo " System uptime "
+
+
 # uptime: Show how long the system has been running and load averages
-uptime
+uptime=$(uptime)
+printf '%-20s: %s\n' "Uptime" "$uptime"
 
-echo " Disk usage Root "
+
+
+
 # df -h /: Display disk space usage for root partition in human-readable format
 # awk 'NR==2 {print $5}': Extract the 5th column (usage percentage) from the 2nd row
-df -h / | awk 'NR==2 {print $5}'
+disk_usage=$(df -h / | awk 'NR==2 {print $5}')
+printf '%-20s: %s\n' "Disk Usage" "$disk_usage"
 
-echo " Total memory "
+
 # free -h: Display memory usage statistics in human-readable format
 # grep Mem: Filter to show only the memory line
 # awk '{print $2}': Extract the 2nd column (total memory)
-free -h | grep Mem | awk '{print $2}'
+total_memory=$(free -h | grep Mem | awk '{print $2}')
+printf '%-20s: %s\n' "Total Memory" "$total_memory"
 
-echo " Used memory "
+
 # free -h: Display memory usage statistics in human-readable format
 # grep Mem: Filter to show only the memory line
 # awk '{print $3}': Extract the 3rd column (used memory)
-free  -h | grep Mem | awk '{print $3}'
+used_memory=$(free -h | grep Mem | awk '{print $3}')
+printf '%-20s: %s\n' "Used Memory" "$used_memory"
+
+
 
