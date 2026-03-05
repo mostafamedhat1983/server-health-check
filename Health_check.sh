@@ -48,3 +48,8 @@ printf '%-20s: %s\n' "Used Memory" "$used_memory"
 
 
 
+ idle_cpu=$(top -bn1 | grep %Cpu | awk '{print $8}')
+ cpu_usage=$(echo "100 - $idle_cpu" | bc)
+printf '%-20s: %.2f%%\n' "CPU Usage" "$cpu_usage"
+
+
