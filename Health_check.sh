@@ -47,6 +47,10 @@ used_memory=$(free -h | grep Mem | awk '{print $3}')
 printf '%-20s: %s\n' "Used Memory" "$used_memory"
 
 
+used_memory_percent=$(free | grep Mem | awk '{print $3/$2 * 100.0}')
+printf '%-20s: %.2f%%\n' "Memory Usage" "$used_memory_percent"
+
+
 
  idle_cpu=$(top -bn1 | grep %Cpu | awk '{print $8}')
  cpu_usage=$(echo "100 - $idle_cpu" | bc)
