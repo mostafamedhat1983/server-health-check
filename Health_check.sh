@@ -47,20 +47,35 @@ used_memory=$(free -h | grep Mem | awk '{print $3}')
 printf '%-20s: %s\n' "Used Memory" "$used_memory"
 
 
+# free: Display memory usage statistics
+# grep Mem: Filter to show only the memory line
+# awk '{print $3/$2 * 100.0}': Calculate percentage by dividing used memory by total memory and multiply by 100
 used_memory_percent=$(free | grep Mem | awk '{print $3/$2 * 100.0}')
 printf '%-20s: %.2f%%\n' "Memory Usage" "$used_memory_percent"
 
 
 
- idle_cpu=$(top -bn1 | grep %Cpu | awk '{print $8}')
- cpu_usage=$(echo "100 - $idle_cpu" | bc)
+# top -bn1: Run top in batch mode for 1 iteration (non-interactive)
+# grep %Cpu: Filter to show only the CPU usage line
+# awk '{print $8}': Extract the 8th column (idle CPU percentage)
+# bc: Calculator to subtract idle from 100 to get actual CPU usage
+idle_cpu=$(top -bn1 | grep %Cpu | awk '{print $8}')
+cpu_usage=$(echo "100 - $idle_cpu" | bc)
 printf '%-20s: %.2f%%\n' "CPU Usage" "$cpu_usage"
 
 
 
+# ps aux: Show all running processes with detailed information
+# --sort=-%cpu: Sort processes by CPU usage in descending order (highest first)
+# awk 'NR<=6': Show only first 6 lines (header + top 5 processes)
+# printf: Format output showing user, PID, CPU%, MEM%, and command
 top_processes_cpu=$(ps aux --sort=-%cpu | awk 'NR<=6 {printf "  %-10s %8s %5s %5s %s\n", $1, $2, $3"%", $4"%", $11}')  
 printf '%-20s:\n%s\n' "Top Processes Cpu Usage" "$top_processes_cpu"
 
 
+# ps aux: Show all running processes with detailed information
+# --sort=-%mem: Sort processes by memory usage in descending order (highest first)
+# awk 'NR<=6': Show only first 6 lines (header + top 5 processes)
+# printf: Format output showing user, PID, CPU%, MEM%, and command
 top_processes_mem=$(ps aux --sort=-%mem | awk 'NR<=6 {printf "  %-10s %8s %5s %5s %s\n", $1, $2, $3"%", $4"%", $11}')  
 printf '%-20s:\n%s\n' "Top Processes Memory Usage" "$top_processes_mem"
