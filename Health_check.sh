@@ -57,3 +57,10 @@ printf '%-20s: %.2f%%\n' "Memory Usage" "$used_memory_percent"
 printf '%-20s: %.2f%%\n' "CPU Usage" "$cpu_usage"
 
 
+
+top_processes_cpu=$(ps aux --sort=-%cpu | awk 'NR<=6 {printf "  %-10s %8s %5s %5s %s\n", $1, $2, $3"%", $4"%", $11}')  
+printf '%-20s:\n%s\n' "Top Processes Cpu Usage" "$top_processes_cpu"
+
+
+top_processes_mem=$(ps aux --sort=-%mem | awk 'NR<=6 {printf "  %-10s %8s %5s %5s %s\n", $1, $2, $3"%", $4"%", $11}')  
+printf '%-20s:\n%s\n' "Top Processes Memory Usage" "$top_processes_mem"
